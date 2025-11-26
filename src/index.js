@@ -39,9 +39,18 @@ app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/events', eventRoutes);
 
-// Ruta de prueba
+// Rutas de prueba
 app.get('/api/health', (req, res) => {
-  res.json({ message: 'API funcionando correctamente', timestamp: new Date().toISOString() });
+  res.json({ 
+    message: 'API funcionando correctamente', 
+    timestamp: new Date().toISOString(),
+    mongodb: mongoose.connection.readyState === 1 ? 'Conectado' : 'Desconectado'
+  });
+});
+
+app.post('/api/test', (req, res) => {
+  console.log('Test endpoint llamado con:', req.body);
+  res.json({ success: true, received: req.body });
 });
 
 // Middleware de manejo de errores

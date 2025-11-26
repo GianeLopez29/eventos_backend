@@ -2,19 +2,25 @@ import * as authService from '../services/authService.js';
 
 export const register = async (req, res, next) => {
   try {
+    console.log('Datos recibidos para registro:', req.body);
     const result = await authService.registerUser(req.body);
+    console.log('Usuario registrado exitosamente:', result);
     res.status(201).json({
       success: true,
       ...result
     });
   } catch (error) {
+    console.error('Error en registro:', error);
     if (error.statusCode) {
       return res.status(error.statusCode).json({
         success: false,
         message: error.message
       });
     }
-    next(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'Error interno del servidor'
+    });
   }
 };
 
