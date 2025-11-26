@@ -161,3 +161,14 @@ src/
 
 - `npm start` - Ejecutar en producción
 - `npm run dev` - Ejecutar en desarrollo con nodemon
+
+---
+
+## Autor
+
+**Gianella Kiara López Yegros**  
+Estudiante de Diplomatura en Desarrollo Web Full Stack  
+UTN - Universidad Tecnológica Nacional
+
+*Proyecto Final - Sistema de Gestión de Eventos*  
+*Año 2025*
