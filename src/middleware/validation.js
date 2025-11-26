@@ -1,9 +1,16 @@
 import { body, validationResult } from 'express-validator';
 
 export const validateRegister = [
-  body('nombre').notEmpty().withMessage('El nombre es requerido'),
-  body('email').isEmail().withMessage('Email inválido'),
-  body('password').isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres')
+  body('nombre')
+    .notEmpty().withMessage('El nombre es requerido')
+    .isLength({ min: 2 }).withMessage('El nombre debe tener al menos 2 caracteres')
+    .matches(/^[a-zA-ZÀ-ſ\s]+$/).withMessage('El nombre solo puede contener letras y espacios'),
+  body('email')
+    .isEmail().withMessage('El formato del email no es válido')
+    .normalizeEmail(),
+  body('password')
+    .isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres')
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/).withMessage('La contraseña debe contener al menos una minúscula, una mayúscula y un número')
 ];
 
 export const validateLogin = [
@@ -28,9 +35,10 @@ export const validateCategory = [
 export const handleValidationErrors = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    const errorMessages = errors.array().map(error => `${error.path}: ${error.msg}`).join(', ');
     return res.status(400).json({
       success: false,
-      message: 'Errores de validación',
+      message: `Errores de validación: ${errorMessages}`,
       errors: errors.array()
     });
   }

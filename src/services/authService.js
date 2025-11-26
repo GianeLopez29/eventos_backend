@@ -6,7 +6,9 @@ import { sendVerificationEmail } from '../utils/email.js';
 export const registerUser = async (userData) => {
   const existingUser = await userRepository.findUserByEmail(userData.email);
   if (existingUser) {
-    throw new Error('El usuario ya existe');
+    const error = new Error('Ya existe una cuenta con este email');
+    error.statusCode = 400;
+    throw error;
   }
 
   const verificationToken = crypto.randomBytes(32).toString('hex');

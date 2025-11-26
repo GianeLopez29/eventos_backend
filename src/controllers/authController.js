@@ -8,6 +8,12 @@ export const register = async (req, res, next) => {
       ...result
     });
   } catch (error) {
+    if (error.statusCode) {
+      return res.status(error.statusCode).json({
+        success: false,
+        message: error.message
+      });
+    }
     next(error);
   }
 };
@@ -21,7 +27,10 @@ export const login = async (req, res, next) => {
       ...result
     });
   } catch (error) {
-    next(error);
+    return res.status(401).json({
+      success: false,
+      message: error.message
+    });
   }
 };
 
